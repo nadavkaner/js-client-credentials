@@ -85,10 +85,11 @@ export default function Stream(baseUrl, environment, hash, config) {
         }
       }
 
-      es.onerror = (err) => {
+      es.onerror = function(err) {
         console.log('nadav err');
         console.log(err);
-        reconnect();
+        reconnect(err);
+      };
     }
   }
 
