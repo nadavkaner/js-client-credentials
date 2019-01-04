@@ -74,7 +74,7 @@ export default function Stream(baseUrl, environment, hash, config) {
         heartbeatTimeout: timeoutMillis, // used by "event-source-polyfill" package
         silentTimeout: timeoutMillis,
         headers: {
-          Origin: "https://in-v7.local.invision.works"
+          origin: "https://in-v7.local.invision.works"
         },
       };
 
@@ -85,7 +85,10 @@ export default function Stream(baseUrl, environment, hash, config) {
         }
       }
 
-      es.onerror = reconnect;
+      es.onerror = (err) => {
+        console.log('nadav err');
+        console.log(err);
+        reconnect();
     }
   }
 
