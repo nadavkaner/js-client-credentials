@@ -46,6 +46,7 @@ export default function Stream(baseUrl, environment, hash, config) {
   function openConnection() {
     let url;
     let query = '';
+    console.log('nadav package connect');
     if (typeof window.EventSource !== 'undefined') {
       if (useReport) {
         // we don't yet have an EventSource implementation that supports REPORT, so
@@ -73,7 +74,7 @@ export default function Stream(baseUrl, environment, hash, config) {
         silentTimeout: timeoutMillis, // used by "eventsource-polyfill" package
       };
 
-      es = new window.EventSource(url, options);
+      es = new window.EventSource(url, { withCredentials: true });
       for (const key in handlers) {
         if (handlers.hasOwnProperty(key)) {
           es.addEventListener(key, handlers[key]);
