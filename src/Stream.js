@@ -1,4 +1,5 @@
 import { base64URLEncode } from './utils';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Stream(baseUrl, environment, hash, config) {
   const stream = {};
@@ -71,10 +72,13 @@ export default function Stream(baseUrl, environment, hash, config) {
       // timeout properties that are used by several popular polyfills.
       const options = {
         heartbeatTimeout: timeoutMillis, // used by "event-source-polyfill" package
-        silentTimeout: timeoutMillis, // used by "eventsource-polyfill" package
+        silentTimeout: timeoutMillis,
+        headers: {
+          Origin: "https://in-v7.local.invision.works"
+        },
       };
 
-      es = new window.EventSource(url, { withCredentials: true });
+      es = new window.EventSourcePolyfill(url, options);
       for (const key in handlers) {
         if (handlers.hasOwnProperty(key)) {
           es.addEventListener(key, handlers[key]);
