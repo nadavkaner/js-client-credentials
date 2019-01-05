@@ -1,5 +1,4 @@
 import { base64URLEncode } from './utils';
-import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Stream(baseUrl, environment, hash, config) {
   const stream = {};
@@ -7,7 +6,7 @@ export default function Stream(baseUrl, environment, hash, config) {
   const useReport = (config && config.useReport) || false;
   const withReasons = (config && config.evaluationReasons) || false;
   const streamReconnectDelay = (config && config.streamReconnectDelay) || 1000;
-  const timeoutMillis = 300000; // 5 minutes (same as other SDKs) - note, this only has an effect on polyfills
+  const timeoutMillis = 10000;
   let es = null;
   let reconnectTimeoutReference = null;
   let user = null;
@@ -73,12 +72,9 @@ export default function Stream(baseUrl, environment, hash, config) {
       const options = {
         heartbeatTimeout: timeoutMillis, // used by "event-source-polyfill" package
         silentTimeout: timeoutMillis,
-        headers: {
-          origin: "https://in-v7.local.invision.works"
-        },
       };
 
-      es = new window.EventSourcePolyfill(url, options);
+      es = new window.EventSource(url, options);
       for (const key in handlers) {
         if (handlers.hasOwnProperty(key)) {
           es.addEventListener(key, handlers[key]);
