@@ -6,7 +6,7 @@ export default function Stream(baseUrl, environment, hash, config) {
   const useReport = (config && config.useReport) || false;
   const withReasons = (config && config.evaluationReasons) || false;
   const streamReconnectDelay = (config && config.streamReconnectDelay) || 1000;
-  const timeoutMillis = 1000000;
+  const timeoutMillis = 300000;
   let es = null;
   let reconnectTimeoutReference = null;
   let user = null;
@@ -43,7 +43,17 @@ export default function Stream(baseUrl, environment, hash, config) {
     }
   }
 
+  let keepAliveTimer = null;
+
+  function timeoutReconnect() {
+    if (keepAliveTimer !== null) {
+      clearTimeout(keepAliveTimer);
+    }
+    keepAliveTimer = setTimeout(openConnection, 30 * 1000);
+  }
+
   function openConnection() {
+    timeoutReconnect();
     let url;
     let query = '';
     console.log('nadav package connect');
