@@ -6,7 +6,7 @@ export default function Stream(baseUrl, environment, hash, config) {
   const useReport = (config && config.useReport) || false;
   const withReasons = (config && config.evaluationReasons) || false;
   const streamReconnectDelay = (config && config.streamReconnectDelay) || 1000;
-  const timeoutMillis = 10000;
+  const timeoutMillis = 1000000;
   let es = null;
   let reconnectTimeoutReference = null;
   let user = null;
